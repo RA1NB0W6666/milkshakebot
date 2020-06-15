@@ -1,0 +1,60 @@
+const Discord = require("discord.js");
+const prefix = require("../ayarlar.json").prefix;
+
+exports.run = (client, message, params, args) => {
+  if (!params[0]) {
+    const commandNames = Array.from(client.commands.keys());
+    const longest = commandNames.reduce(
+      (long, str) => Math.max(long, str.length),
+      0
+    );
+    message.author.sendCode("");
+    if (!params[0]) {
+      return message.channel.send(
+        new Discord.RichEmbed()
+          .setColor("RED")
+          .setDescription(
+            "Lütfen bilgi edinmek istediğiniz komutun adını yazınız."
+          )
+      );
+    }
+
+    
+  }
+    if (message.channel.type !== "dm") {//dur ya bi
+      message.channel
+        .send(
+          new Discord.RichEmbed()
+            .setColor("#FF69B4")
+            .setDescription(
+              "<:milkshake_yes_emoji:712244397122781184> Mesaj özelden gönderilmiştir."
+            )
+        )
+        .then(m => {
+          message.react("712244397122781184");
+        });
+    }
+    let command = params[0];
+    if (client.commands.has(command)) {
+      command = client.commands.get(command);
+      let yardımkomut = new Discord.RichEmbed()
+        .setTitle("Komut Yardım")
+        .setColor("#FF69B4")
+        .setDescription(
+          `**Komut Adı:** \`${command.help.name}\`  \n\n**Açıklaması:** \`${command.help.description}\` \n\n**Kullanımı:** \`${prefix}${command.help.usage}\` \n\n**Alternatifler:** \`${command.conf.aliases}\` `
+        );
+      message.author.send(yardımkomut);
+    } 
+}
+exports.conf = {
+  enabled: true,
+  guildOnly: false,
+  aliases: [],
+  permLevel: 0
+};
+
+exports.help = {
+  name: "bilgi",
+  description: "Komut hakkında bilgi verir.",
+  usage: "bilgi [komut]"
+};
