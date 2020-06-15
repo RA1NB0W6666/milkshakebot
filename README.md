@@ -1,2 +1,2 @@
-# milkshakebot
+# Milkshake
 bruhmoment
